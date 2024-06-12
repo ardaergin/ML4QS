@@ -1,10 +1,19 @@
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, RobustScaler
 import pandas as pd
 import numpy as np
 from typing import List, Callable, Union
+from functools import partial
 
+def count_above_threshold_1(series: pd.Series, threshold: float = 1) -> int:
+    return ((series > threshold) | (series < -threshold)).sum()
 
-def count_above_threshold(series: pd.Series, threshold: float = 1.5) -> int:
+def count_above_threshold_1_5(series: pd.Series, threshold: float = 1.5) -> int:
+    return ((series > threshold) | (series < -threshold)).sum()
+
+def count_above_threshold_2(series: pd.Series, threshold: float = 2) -> int:
+    return ((series > threshold) | (series < -threshold)).sum()
+
+def count_above_threshold_3(series: pd.Series, threshold: float = 3) -> int:
     return ((series > threshold) | (series < -threshold)).sum()
 
 
@@ -34,7 +43,7 @@ def aggregate_data(
         columns = ['acc_x', 'acc_y', 'acc_z', 'gy_x', 'gy_y', 'gy_z', 'mag_x', 'mag_y', 'mag_z']
     
     if agg_funcs is None:
-        agg_funcs = ['max', 'min', 'std', 'mean', 'median', count_above_threshold]
+        agg_funcs = ['max', 'min', 'std', 'mean', 'median']
     
     if agg_first is None:
         agg_first = ['genre']
